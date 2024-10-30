@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken');
 const db = require('../config/db');
 
-// Token නිර්මාණය කිරීමේ ෆන්ක්ෂනය
+// Token නිර්මාණය කිරීම
 const generateToken = (user) => {
     return jwt.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
@@ -31,7 +31,7 @@ exports.register = async (req, res) => {
 exports.login = (req, res) => {
     const { identifier, password } = req.body;
 
-    // පරිශීලකයා username හෝ ඊ-මේල් අනුව සොයාගන්න
+    //  username or email
     db.query('SELECT * FROM users WHERE username = ? OR email = ?', [identifier, identifier], (err, results) => {
         if (err || results.length === 0) {
             return res.status(401).send('Invalid credentials'); 
@@ -39,7 +39,7 @@ exports.login = (req, res) => {
 
         const user = results[0];
 
-        // ලබාදී ඇති මුරපදය හා සුරක්ෂිත මුරපදය සමඟ සමාන වන්නේදැයි පරීක්ෂා කිරීම
+        // ලබාදී ඇති මුරපදය පරීක්ෂා කිරීම
         bcrypt.compare(password, user.password, (err, isMatch) => {
             if (err || !isMatch) {
                 return res.status(401).send('Invalid credentials'); 
@@ -73,7 +73,7 @@ exports.updateUser = (req, res) => {
     }
     if (password) {
         fields.push(' password = ? ');
-        // Password hash කරන්න
+        // Password hash කිරිම
         values.push(bcrypt.hashSync(password, 10)); 
     }
 
