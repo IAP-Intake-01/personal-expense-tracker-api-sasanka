@@ -22,7 +22,7 @@ router.put('/update-expense/:id', verifyToken, updateExpense);
 router.delete('/delete-expense/:id', verifyToken, deleteExpense);
 
 
-router.get('/expenses/current-month', verifyToken, getCurrentMonthExpensesByCategory); 
-router.get('/expenses/by-month', verifyToken, getExpensesByMonth); 
+router.get('/expenses-current-month', verifyToken, getCurrentMonthExpensesByCategory); 
+router.get('/expenses-by-month', verifyToken, getExpensesByMonth); 
 
 module.exports = router;
