@@ -39,13 +39,12 @@ exports.login = (req, res) => {
 
         const user = results[0];
 
-        // ලබාදී ඇති මුරපදය පරීක්ෂා කිරීම
+        
         bcrypt.compare(password, user.password, (err, isMatch) => {
             if (err || !isMatch) {
                 return res.status(401).send('Invalid credentials'); 
             }
 
-            // සාර්ථක නම්, token එකක් නිර්මාණය කරන්න
             const token = generateToken(user);  
             res.json({ token });
         });
@@ -62,7 +61,6 @@ exports.updateUser = (req, res) => {
     const fields = [];
     const values = [];
 
-    // Optional fields
     if (username) {
         fields.push(' username = ? ');
         values.push(username);
